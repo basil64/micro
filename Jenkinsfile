@@ -1,13 +1,14 @@
 pipeline {
     agent any
-
+    tools { 
+        maven 'Maven 3.3.9' 
+        jdk 'jdk14' 
+    }
     stages {
         stage('Build') {
             steps {
                 echo 'Building..'
-                withMaven {
-                   sh "mvn clean install"
-                }    
+                   sh 'mvn clean install'
             }
         }
         stage('Test') {
