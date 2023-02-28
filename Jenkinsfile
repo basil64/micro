@@ -5,7 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
-                with Maven {
+                withMaven {
                    sh "mvn clean install"
                 }    
             }
