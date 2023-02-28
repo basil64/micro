@@ -1,0 +1,1958 @@
+openapi: 3.0.2
+info:
+  title: Book Store Api First model
+  version: 1.1.0
+  description: This API refers UI from 'Role Concept User Managament.pptx'
+
+#================================================================================
+#
+# PATHS
+#
+#================================================================================
+paths:
+
+  /books:
+    description: >
+      TODO:
+      - autocomplete
+    get:
+      tags:
+        - books
+      operationId: getAllBooks
+      responses:
+        '200':
+          description: Returns all books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+        '403':
+          $ref: '#/components/responses/403errorResponse'
+    post:
+      tags:
+        - books
+      operationId: addBook
+      requestBody:
+        description: Book object to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        '201':
+          description: Returns created book
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '400':
+          $ref: '#/components/responses/4xxerrorResponse'
+    put:
+      tags:
+        - books
+      operationId: updateBook
+      requestBody:
+        description: Update Book
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        '200':
+          description: Returns updated book
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '400':
+          $ref: '#/components/responses/4xxerrorResponse'
+
+
+  /books/{uuid}:
+    description: >
+      TODO:
+      - autocomplete
+    parameters:
+      - $ref: '#/components/parameters/uniqueUuid'
+    get:
+      tags:
+        - books
+      operationId: getBookByUuid
+      responses:
+        '200':
+          description: Returns book by UUID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '403':
+          $ref: '#/components/responses/403errorResponse'
+
+  /authors:
+    description: >
+      TODO:
+      - autocomplete
+    get:
+      tags:
+        - authors
+      operationId: getAllAuthors
+      responses:
+        '200':
+          description: Returns all authors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+        '403':
+          $ref: '#/components/responses/403errorResponse'
+    post:
+      tags:
+        - authors
+      operationId: createAuthor
+      requestBody:
+        description: Author object to creat
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+      responses:
+        '200':
+          description: Returns created author
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        '403':
+          $ref: '#/components/responses/403errorResponse'
+    put:
+      tags:
+        - authors
+      operationId: updateAuthor
+      requestBody:
+        description: Update Author
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+      responses:
+        '200':
+          description: Returns updated Author
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        '400':
+          $ref: '#/components/responses/4xxerrorResponse'
+
+  /authors/{uuid}:
+    description: >
+      TODO:
+      - autocomplete
+    parameters:
+      - $ref: '#/components/parameters/uniqueUuid'
+    get:
+      tags:
+        - authors
+      operationId: getAuthorByUuid
+      responses:
+        '200':
+          description: Returns Author by UUID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        '403':
+          $ref: '#/components/responses/403errorResponse'
+
+  /users:
+    description: >
+      TODO:
+      - autocomplete
+    parameters:
+      - $ref: '#/components/parameters/userHeader'
+      - $ref: '#/components/parameters/organizationHeader'
+    get:
+      tags:
+        - users
+        - Pageable responses
+      operationId: getAllUsers
+      parameters:
+        - $ref: '#/components/parameters/pageNumber'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/pageSort'
+        - name: name
+          in: query
+          schema:
+            type: string
+        - name: userType
+          in: query
+          schema:
+            $ref: '#/components/schemas/UserType'
+      responses:
+        '200':
+          description: Returns all Users in _embedded section
+          content:
+            application/hal+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '403':
+          $ref: '#/components/responses/403errorResponse'
+
+    post:
+      tags:
+        - users
+      operationId: addUser
+      requestBody:
+        description: User object to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Returns created user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/4xxerrorResponse'
+
+  /users/{uuid}:
+    parameters:
+      - $ref: '#/components/parameters/userHeader'
+      - $ref: '#/components/parameters/organizationHeader'
+      - $ref: '#/components/parameters/uniqueUuid'
+
+    get:
+      tags:
+        - users
+      operationId: getUser
+      responses:
+        '200':
+          description: Returns particular user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '403':
+          $ref: '#/components/responses/403errorResponse'
+
+    put:
+      tags:
+        - users
+      operationId: updateUser
+      parameters:
+        - $ref: '#/components/parameters/userHeader'
+        - $ref: '#/components/parameters/organizationHeader'
+      requestBody:
+        description: User object for update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '204':
+          description: User has been updated
+        '400':
+          $ref: '#/components/responses/4xxerrorResponse'
+        '409':
+          description: Optimistic locking issue
+
+    delete:
+      tags:
+        - users
+      operationId: deleteUser
+      responses:
+        '204':
+          description: User has been deleted
+        '409':
+          description: Optimistic locking issue
+
+  /users/current-user:
+    get:
+      tags:
+        - users
+      operationId: getCurrentUser
+      responses:
+        '200':
+          description: Returns particular user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '403':
+          $ref: '#/components/responses/403errorResponse'
+
+  /users/current-user/policies:
+    get:
+      tags:
+        - users
+        - Pageable responses
+      parameters:
+        - $ref: '#/components/parameters/userHeader'
+        - $ref: '#/components/parameters/organizationHeader'
+        - $ref: '#/components/parameters/pageNumber'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/pageSort'
+      operationId: getUserPolicies
+      responses:
+        '200':
+          description: Returns policies for a user
+          content:
+            application/hal+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Policy'
+        '403':
+          $ref: '#/components/responses/403errorResponse'
+
+  /users/{uuid}/roles:
+    get:
+      tags:
+        - users
+      parameters:
+        - $ref: '#/components/parameters/uniqueUuid'
+        - $ref: '#/components/parameters/userHeader'
+        - $ref: '#/components/parameters/organizationHeader'
+        - $ref: '#/components/parameters/pageNumber'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/pageSort'
+        - name: embed
+          in: query
+          description: >
+            Tells which entity field should be included in response.
+            As for now implementation is not generic. We need control fields
+            due to security reasons.
+          example: embed=businessTeams
+          schema:
+            type: string
+            enum: [ businessTeams ]
+      operationId: getUserRoles
+      responses:
+        '200':
+          description: Returns roles for a user
+          content:
+            application/hal+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role'
+        '403':
+          $ref: '#/components/responses/403errorResponse'
+
+  /users/{uuid}/unlock:
+    parameters:
+      - $ref: '#/components/parameters/uniqueUuid'
+
+    put:
+      tags:
+        - users
+      operationId: unlockUser
+      responses:
+        '204':
+          description: User has been unlocked
+        '400':
+          $ref: '#/components/responses/4xxerrorResponse'
+
+  /customers:
+    parameters:
+      - $ref: '#/components/parameters/userHeader'
+      - $ref: '#/components/parameters/organizationHeader'
+    description: >
+      TODO:
+      - filtering
+      - examples
+      - documentation
+
+    get:
+      tags:
+        - customers
+        - Pageable responses
+      operationId: getAllCustomers
+      parameters:
+        - name: name
+          in: query
+          description: >
+            Provides case insensitive search by customer name functionality
+          schema:
+            type: string
+        - $ref: '#/components/parameters/pageNumber'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/pageSort'
+      responses:
+        '200':
+          description: Returns all Customers in _embedded section
+          content:
+            application/hal+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+        '403':
+          $ref: '#/components/responses/403errorResponse'
+
+    post:
+      tags:
+        - customers
+      description: Adds particular customer
+      operationId: addCustomer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '201':
+          description: Returns created customer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '400':
+          $ref: '#/components/responses/4xxerrorResponse'
+
+  /customers/{uuid}:
+    parameters:
+      - $ref: '#/components/parameters/uniqueUuid'
+      - $ref: '#/components/parameters/userHeader'
+      - $ref: '#/components/parameters/organizationHeader'
+
+    get:
+      tags:
+        - customers
+      operationId: getCustomer
+      responses:
+        '200':
+          description: Returns particular customer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+
+    put:
+      tags:
+        - customers
+      operationId: updateCustomer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          description: Customer object for update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '204':
+          description: Customer has been updated
+        '400':
+          $ref: '#/components/responses/4xxerrorResponse'
+        '409':
+          description: Optimistic locking issue
+
+    delete:
+      tags:
+        - customers
+      operationId: deleteCustomer
+      responses:
+        '204':
+          description: Customer has been deleted
+        '409':
+          description: Optimistic locking issue
+
+  /customer-groups:
+    description: >
+      TODO:
+      - autocomplete
+      - customers expansion/embedding
+
+    get:
+      tags:
+        - customer-groups
+        - Pageable responses
+      operationId: getAllCustomerGroups
+      parameters:
+        - $ref: '#/components/parameters/userHeader'
+        - $ref: '#/components/parameters/organizationHeader'
+        - name: embed
+          in: query
+          description: >
+            Tells which entity field should be included in response.
+            As for now implementation is not generic. We need control fields
+            due to security reasons. Current UI scenario needs to list
+            CustomerGroups with respective teams which are supporting this
+            CustomerGroups
+          example: embed=businessTeams
+          schema:
+            type: string
+            enum: [ businessTeams ]
+        - name: name
+          in: query
+          description: >
+            Provides search by name functionality
+          schema:
+            type: string
+        - name: customerName
+          in: query
+          description: >
+            Provides search by customerName functionality
+          schema:
+            type: string
+        - $ref: '#/components/parameters/includeDeleted'
+        - $ref: '#/components/parameters/pageNumber'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/pageSort'
+
+      responses:
+        '200':
+          description: Returns all Customer Groups
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomerGroup'
+        '403':
+          $ref: '#/components/responses/403errorResponse'
+
+    post:
+      tags:
+        - customer-groups
+      description: References slide 18
+      operationId: addCustomerGroup
+      parameters:
+        - $ref: '#/components/parameters/userHeader'
+        - $ref: '#/components/parameters/organizationHeader'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerGroup'
+      responses:
+        '201':
+          description: Returns created object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerGroup'
+        '400':
+          $ref: '#/components/responses/4xxerrorResponse'
+
+  /customer-groups/{uuid}:
+    parameters:
+      - $ref: '#/components/parameters/uniqueUuid'
+      - $ref: '#/components/parameters/userHeader'
+      - $ref: '#/components/parameters/organizationHeader'
+    description: >
+      References slide 20
+
+    get:
+      tags:
+        - customer-groups
+      operationId: getCustomerGroup
+      responses:
+        '200':
+          description: Returns particular Customer Group
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerGroup'
+        '403':
+          $ref: '#/components/responses/403errorResponse'
+
+    put:
+      tags:
+        - customer-groups
+      operationId: updateCustomerGroup
+      parameters:
+        - $ref: '#/components/parameters/userHeader'
+        - $ref: '#/components/parameters/organizationHeader'
+      requestBody:
+        description: Customer Group body. Only Customer group. Withou object linking
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerGroup'
+      responses:
+        '204':
+          description: Customer group has been updated
+        '400':
+          $ref: '#/components/responses/4xxerrorResponse'
+        '409':
+          description: Optimistic locking issue
+
+    delete:
+      tags:
+        - customer-groups
+      parameters:
+        - $ref: '#/components/parameters/userHeader'
+        - $ref: '#/components/parameters/organizationHeader'
+      operationId: deleteCustomerGroup
+      responses:
+        '204':
+          description: CustomerGroup has been deleted
+        '409':
+          description: Optimistic locking issue
+
+
+  /customer-groups/{uuid}/customers:
+    parameters:
+      - $ref: '#/components/parameters/uniqueUuid'
+    get:
+      tags:
+        - customer-groups
+      operationId: getCustomersForCustomerGroup
+      parameters:
+        - $ref: '#/components/parameters/userHeader'
+        - $ref: '#/components/parameters/organizationHeader'
+      responses:
+        '200':
+          description: Returns all Customers in _embedded section
+          content:
+            application/hal+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+        '403':
+          $ref: '#/components/responses/403errorResponse'
+
+
+    put:
+      tags:
+        - customer-groups
+        - customers
+        - relations
+      description: References slide 19
+      operationId: addCustomersToCustomerGroup
+      parameters:
+        - name: customer_group_uuid
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/Uuid'
+      requestBody:
+        description: Body should contain complete UUID array of customers who belongs to group. This will everwrite current system cumstomers list
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Uuid'
+      responses:
+        '204':
+          description: Customer Group has been updated
+        '400':
+          description: Mailformed body request
+
+  /business-teams:
+    description: >
+      TODO:
+      - post operation
+
+    get:
+      tags:
+        - business-teams
+        - Pageable responses
+      operationId: getBusinessTeams
+      parameters:
+        - $ref: '#/components/parameters/userHeader'
+        - $ref: '#/components/parameters/organizationHeader'
+        - $ref: '#/components/parameters/pageNumber'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/pageSort'
+        - $ref: '#/components/parameters/includeDeleted'
+        - name: embed
+          in: query
+          description: >
+            Tells which entity field should be included in response.
+            As for now implementation is not generic. We need control fields
+            due to security reasons.
+          example: embed=users
+          schema:
+            type: string
+            enum: [ users, customerGroups, roles ]
+        - $ref: '#/components/parameters/sizeEmbedded'
+        - name: name
+          in: query
+          description: >
+            Provides search by businessTeam name functionality
+          schema:
+            type: string
+        - name: userName
+          in: query
+          description: >
+            Provides search by user userName functionality
+          schema:
+            type: string
+        - name: customerName
+          in: query
+          description: >
+            Provides search by customer customerName functionality
+          schema:
+            type: string
+        - name: customerGroupName
+          in: query
+          description: >
+            Provides search by customerGroup name functionality
+          schema:
+            type: string
+        - name: roleName
+          in: query
+          description: >
+            Provides search by role name functionality
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Returns all Business teams
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BusinessTeam'
+    post:
+      tags:
+        - business-teams
+      operationId: createBusinessTeam
+      parameters:
+        - $ref: '#/components/parameters/userHeader'
+        - $ref: '#/components/parameters/organizationHeader'
+      requestBody:
+        description: BusinessTeam object to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BusinessTeam'
+      responses:
+        '201':
+          description: Returns created BusinessTeam
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessTeam'
+        '400':
+          $ref: '#/components/responses/4xxerrorResponse'
+
+  /business-teams/{uuid}:
+    parameters:
+      - $ref: '#/components/parameters/uniqueUuid'
+      - $ref: '#/components/parameters/userHeader'
+      - $ref: '#/components/parameters/organizationHeader'
+    description: >
+      - TODO delete operation
+
+    get:
+      tags:
+        - business-teams
+      operationId: getBusinessTeam
+      responses:
+        '200':
+          description: Returns particular Business Team
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessTeam'
+
+    put:
+      tags:
+        - business-teams
+      operationId: updateBusinessTeam
+      requestBody:
+        description: BusinessTeam object for update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BusinessTeam'
+      responses:
+        '204':
+          description: BusinessTeam has been updated
+        '400':
+          $ref: '#/components/responses/4xxerrorResponse'
+        '409':
+          description: Optimistic locking issue
+
+    delete:
+      tags:
+        - customer-groups
+      operationId: deleteBusinessTeam
+      responses:
+        '204':
+          description: BusinessTeam has been deleted
+        '409':
+          description: Optimistic locking issue
+
+
+  /business-teams/{uuid}/users:
+    parameters:
+      - $ref: '#/components/parameters/uniqueUuid'
+      - $ref: '#/components/parameters/userHeader'
+      - $ref: '#/components/parameters/organizationHeader'
+    get:
+      tags:
+        - users
+      operationId: getUsersForBusinessTeam
+      responses:
+        '200':
+          description: Returns all Users in _embedded section
+          content:
+            application/hal+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '403':
+          $ref: '#/components/responses/403errorResponse'
+
+    post:
+      tags:
+        - business-teams
+        - users
+        - relations
+      operationId: addUsersToBusinessTeam
+      requestBody:
+        description: >
+          Body should contain complete UUID array of users who belongs to team. This will overwrite current business-team members
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Uuid'
+      responses:
+        '204':
+          description: Customer Group has been updated
+        '400':
+          description: Mailformed body request
+
+  /business-teams/{uuid}/customer-groups:
+    parameters:
+      - $ref: '#/components/parameters/uniqueUuid'
+      - $ref: '#/components/parameters/userHeader'
+      - $ref: '#/components/parameters/organizationHeader'
+
+    get:
+      tags:
+        - customer-groups
+      operationId: getCustomerGroupsForBusinessTeam
+      responses:
+        '200':
+          description: Returns all Customer Groups in _embedded section
+          content:
+            application/hal+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomerGroup'
+        '403':
+          $ref: '#/components/responses/403errorResponse'
+
+    post:
+      tags:
+        - business-teams
+        - customer-groups
+        - relations
+      operationId: addCustomerGroupsToBusinessTeam
+      requestBody:
+        description: >
+          Body should contain complete UUID array of CustomerGroups which belongs to team. This will overwrite current business-team assigned CustomerGroups
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Uuid'
+      responses:
+        '204':
+          description: BusinessTeam has been updated
+        '400':
+          description: Mailformed body request
+
+  /business-teams/{uuid}/roles:
+    parameters:
+      - $ref: '#/components/parameters/uniqueUuid'
+      - $ref: '#/components/parameters/userHeader'
+      - $ref: '#/components/parameters/organizationHeader'
+
+    get:
+      tags:
+        - roles
+      operationId: getRolesForBusinessTeam
+      responses:
+        '200':
+          description: Returns all roles in _embedded section
+          content:
+            application/hal+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role'
+        '403':
+          $ref: '#/components/responses/403errorResponse'
+
+
+  /roles:
+    parameters:
+      - $ref: '#/components/parameters/userHeader'
+      - $ref: '#/components/parameters/organizationHeader'
+    description: >
+      TODO:
+      - post operation
+      - /uuid put and delete operation
+
+    get:
+      tags:
+        - roles
+        - Pageable responses
+      operationId: getRoles
+      parameters:
+        - $ref: '#/components/parameters/pageNumber'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/pageSort'
+        - name: embed
+          in: query
+          description: >
+            Tells which entity field should be included in response.
+            As for now implementation is not generic. We need control fields
+            due to security reasons.
+          example: embed=businessTeams
+          schema:
+            type: string
+            enum: [ businessTeams ]
+        - name: name
+          in: query
+          schema:
+            type: string
+        - $ref: '#/components/parameters/includeDeleted'
+      responses:
+        '200':
+          description: Returns all Roles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role'
+
+    post:
+      tags:
+        - roles
+      operationId: addRole
+      requestBody:
+        description: Role object to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+      responses:
+        '201':
+          description: Returns created role
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '400':
+          $ref: '#/components/responses/4xxerrorResponse'
+
+  /roles/{uuid}:
+    parameters:
+      - $ref: '#/components/parameters/uniqueUuid'
+      - $ref: '#/components/parameters/userHeader'
+      - $ref: '#/components/parameters/organizationHeader'
+    get:
+      tags:
+        - roles
+      operationId: getRole
+      responses:
+        '200':
+          description: Returns particular role
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '403':
+          $ref: '#/components/responses/403errorResponse'
+
+    put:
+      tags:
+        - roles
+      operationId: updateRole
+      requestBody:
+        description: Role object for update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+      responses:
+        '204':
+          description: Role has been updated
+        '400':
+          $ref: '#/components/responses/4xxerrorResponse'
+        '409':
+          description: Optimistic locking issue
+
+    delete:
+      tags:
+        - roles
+      operationId: deleteRole
+      responses:
+        '204':
+          description: Role has been deleted
+        '409':
+          description: Optimistic locking issue
+
+  /roles/{uuid}/policies:
+    parameters:
+      - $ref: '#/components/parameters/uniqueUuid'
+      - $ref: '#/components/parameters/userHeader'
+      - $ref: '#/components/parameters/organizationHeader'
+
+    get:
+      tags:
+        - policies
+      operationId: getPoliciesForRole
+      parameters:
+        - $ref: '#/components/parameters/pageNumber'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/pageSort'
+      responses:
+        '200':
+          description: Get all policies for a role resource. Returns all Policies in an _embedded section.
+          content:
+            application/hal+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Policy'
+        '404':
+          $ref: '#/components/responses/4xxerrorResponse'
+
+  /policies:
+    description: >
+      TODO:
+      - post operation
+    parameters:
+      - $ref: '#/components/parameters/userHeader'
+      - $ref: '#/components/parameters/organizationHeader'
+    get:
+      tags:
+        - policies
+        - Pageable responses
+      operationId: getPolicies
+      parameters:
+        - $ref: '#/components/parameters/pageNumber'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/pageSort'
+        - name: user
+          description: >
+            Litmits result o policies assigned to single user
+          in: query
+          schema:
+            $ref: '#/components/schemas/Uuid'
+        - name: customer
+          description: >
+            If provided indicates that we are fetching policies with CUSTOMER context,
+            if not we are fetching all policies regardless context.
+            This query have to traverse business-teams and roles many to many relationships and check all assigned
+            policies
+          in: query
+          schema:
+            $ref: '#/components/schemas/Uuid'
+        - name: context
+          description: If You want to limit result to policies with particular context.
+          in: query
+          schema:
+            $ref: '#/components/schemas/Context'
+      responses:
+        '200':
+          description: Returns all Policies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Policy'
+
+    post:
+      tags:
+        - policies
+      operationId: addPolicy
+      requestBody:
+        description: Policy object to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Policy'
+      responses:
+        '201':
+          description: Returns created policy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Policy'
+        '400':
+          $ref: '#/components/responses/4xxerrorResponse'
+
+  /policies/{uuid}:
+    parameters:
+      - $ref: '#/components/parameters/uniqueUuid'
+      - $ref: '#/components/parameters/userHeader'
+      - $ref: '#/components/parameters/organizationHeader'
+    get:
+      tags:
+        - policies
+      operationId: getPolicy
+      responses:
+        '200':
+          description: 'Returns particular policy'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Policy'
+        '403':
+          $ref: '#/components/responses/403errorResponse'
+
+    put:
+      tags:
+        - policies
+      operationId: updatePolicy
+      parameters:
+        - $ref: '#/components/parameters/userHeader'
+        - $ref: '#/components/parameters/organizationHeader'
+      requestBody:
+        description: Policy object for update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Policy'
+      responses:
+        '204':
+          description: Policy has been updated
+        '400':
+          $ref: '#/components/responses/4xxerrorResponse'
+        '409':
+          description: Optimistic locking issue
+
+    delete:
+      tags:
+        - policies
+      operationId: deletePolicy
+      parameters:
+        - $ref: '#/components/parameters/userHeader'
+        - $ref: '#/components/parameters/organizationHeader'
+      responses:
+        '204':
+          description: Policy has been deleted
+        '409':
+          description: Optimistic locking issue
+
+  /policy-templates:
+    get:
+      parameters:
+        - $ref: '#/components/parameters/userHeader'
+        - $ref: '#/components/parameters/organizationHeader'
+        - $ref: '#/components/parameters/pageNumber'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/pageSort'
+      tags:
+        - policies
+        - Pageable responses
+      operationId: getPolicyTemplates
+      responses:
+        '200':
+          description: Returns all Permissions (Templates of Policy)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Policy'
+
+  /evaluations/x-eyes-check/{permission_name}:
+    put:
+      operationId: xEyesCheckNone
+      parameters:
+        - $ref: '#/components/parameters/organizationHeader'
+        - $ref: '#/components/parameters/requestIdHeader'
+        - name: user_uuid
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/Uuid'
+        - name: customer_uuid
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/Uuid'
+        - name: permission_name
+          in: path
+          required: true
+          schema:
+            type: string
+          example: 'approval.closeCustomerOrder.approve'
+      requestBody:
+        description: >
+          Generic body containing evaluation arguments for complex scenarios like x-eyes-check or trade limit
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PermissionParams'
+            examples:
+              xeyescheck:
+                value:
+                  trading_amount: 1000
+                summary: >
+                  You need provide current trading amonut which will bee needed for policy evaluation. Number of approvers depends on amount
+      responses:
+        '200':
+          description: 'Policy has been evaluated in IAM with success'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/XEyesCheckEvaluation'
+              examples:
+                xeyescheck:
+                  value:
+                    number_of_approvals: 2
+                    approvals_list:
+                      - 'caf83018-0112-4864-8888-one-user'
+                      - 'caf83018-0112-4864-8888-another-user'
+                  summary: >
+                    IAM returns list of users who can approve trade with ammout provided in request body
+
+  /evaluations/permissions/{user_uuid}/{permission_name}:
+    put:
+      operationId: evaluatePolicy
+      parameters:
+        - $ref: '#/components/parameters/userHeader'
+        - $ref: '#/components/parameters/organizationHeader'
+        - $ref: '#/components/parameters/requestIdHeader'
+        - name: user_uuid
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/Uuid'
+        - name: permission_name
+          in: path
+          required: true
+          schema:
+            type: string
+          examples:
+            simple_policy:
+              value: 'cvault.bank'
+            limit_policy:
+              value: 'orders.buyLimit.create'
+        - name: customer_uuid
+          description: >
+            If provided indicates that we are fetching policies with CUSTOMER context,
+            if not we are fetching all policies regardless context.
+            This query have to traverse business-teams and roles many to many relatioships and check all assigned
+            policies
+          in: query
+          schema:
+            $ref: '#/components/schemas/Uuid'
+          example: 'caf83018-0112-4864-8888-3eee5efb94e2'
+      requestBody:
+        description: >
+          Body containing evaluation arguments for complex scenarios like trade limit
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PermissionParams'
+            examples:
+              amount:
+                value:
+                  trading_amount: 1000
+                summary: >
+                  You need provide current trading amonut which will bee needed for policy evaluation
+      responses:
+        '200':
+          description: 'Policy has been evaluated in IAM with success'
+          content:
+            application/json:
+              schema:
+                type: boolean
+
+  /evaluations/permissions/{user_uuid}:
+    put:
+      operationId: batchEvaluatePolicy
+      parameters:
+        - $ref: '#/components/parameters/userHeader'
+        - $ref: '#/components/parameters/organizationHeader'
+        - $ref: '#/components/parameters/requestIdHeader'
+        - name: user_uuid
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/Uuid'
+        - name: customer_uuid
+          description: >
+            If provided indicates that we are fetching policies with CUSTOMER context,
+            if not we are fetching all policies regardless context.
+            This query have to traverse business-teams and roles many to many relatioships and check all assigned
+            policies
+          in: query
+          schema:
+            $ref: '#/components/schemas/Uuid'
+          example: 'caf83018-0112-4864-8888-3eee5efb94e2'
+      requestBody:
+        description: >
+          Body containing evaluation arguments for complex scenarios like trade limit
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PermissionParams'
+            examples:
+              permissionNames:
+                summary: >
+                  You need to provide list of permission names to be checked
+      responses:
+        '200':
+          description: 'Batch of policies has been evaluated in IAM with success'
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: boolean
+
+
+  /evaluations/orders/{user_uuid}:
+    get:
+      operationId: getFilterData
+      parameters:
+        - $ref: '#/components/parameters/organizationHeader'
+        - $ref: '#/components/parameters/userHeader'
+        - $ref: '#/components/parameters/requestIdHeader'
+        - name: user_uuid
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/Uuid'
+        - name: permissions
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: 'Order filter data was returned'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderFilter'
+
+  #================================================================================
+  #
+  # COMPONENTS
+  #
+  #================================================================================
+
+
+components:
+
+  responses:
+
+    4xxerrorResponse:
+      description: Response used to provide error details
+      content:
+        application/json:
+          example: '{ "error": "validation.name.unique" }'
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+
+
+    403errorResponse:
+      description: Client don't have permissions to perform operation
+
+
+  parameters:
+
+    bookISBN:
+      name: isbn
+      in: query
+      description: Book ISBN
+      schema:
+        type: array
+        items:
+          type: string
+
+    userHeader:
+      name: c-user-uuid
+      in: header
+      #should be required once we migrate API's
+      required: false
+      schema:
+        $ref: '#/components/schemas/Uuid'
+
+    organizationHeader:
+      name: c-organization-uuid
+      in: header
+      #should be required once we migrate API's
+      required: false
+      schema:
+        $ref: '#/components/schemas/Uuid'
+
+    requestIdHeader:
+      name: request-id
+      in: header
+      required: false
+      schema:
+        type: string
+
+    pageNumber:
+      name: page
+      in: query
+      description: defines page number we want to display
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+        default: 0
+
+    pageSize:
+      name: size
+      in: query
+      description: defines how many elements we want to display on page
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+
+    pageSort:
+      name: sort
+      in: query
+      description: defines which field we plan to use for sorting
+      example: sort=name,asc sort=name,desc sort=age,desc
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: false
+
+    uniqueUuid:
+      name: uuid
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Uuid'
+
+    includeDeleted:
+      name: includeDeleted
+      in: query
+      description: Include in the result all entities including deleted ones.
+      example: includeDeleted=true
+      schema:
+        type: boolean
+        default: false
+
+    sizeEmbedded:
+      name: sizeEmbedded
+      in: query
+      description: Defines the max size of embedded items that should be returned in an embedded query.
+      example: sizeEmbedded=20
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+        maximum: 100
+        default: 20
+
+  schemas:
+    Uuid:
+      type: string
+      format: uuid
+
+    Customer:
+      type: object
+      properties:
+        uuid:
+          $ref: '#/components/schemas/Uuid'
+        organizationUuid:
+          $ref: '#/components/schemas/Uuid'
+        name:
+          type: string
+        alias:
+          type: string
+        customerType:
+          $ref: '#/components/schemas/CustomerType'
+        version:
+          type: integer
+          format: int64
+        customerGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerGroup'
+        locked:
+          type: boolean
+        deleted:
+          type: boolean
+
+          #todo: make customer more preceise
+
+    BookDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        isbn:
+          type: string
+        description:
+          type: string
+        uuid:
+          $ref: '#/components/schemas/Uuid'
+
+    Book:
+      type: object
+      properties:
+        bookDetails:
+          $ref: '#/components/schemas/BookDetails'
+        authorDetails:
+          $ref: '#/components/schemas/AuthorDetails'
+
+    AuthorDetails:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        description:
+          type: string
+        uuid:
+          $ref: '#/components/schemas/Uuid'
+
+    Author:
+      type: object
+      properties:
+        authorDetails:
+          $ref: '#/components/schemas/AuthorDetails'
+        books:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookDetails'
+
+    Category:
+      type: object
+      properties:
+        description:
+          type: string
+        category:
+          $ref: '#/components/schemas/BookCategory'
+        uuid:
+          $ref: '#/components/schemas/Uuid'
+
+    User:
+      type: object
+      properties:
+        uuid:
+          $ref: '#/components/schemas/Uuid'
+        version:
+          type: integer
+          format: int64
+        userName:
+          type: string
+        phone:
+          type: string
+        language:
+          $ref: '#/components/schemas/UserLanguage'
+        secondFactorType:
+          $ref: '#/components/schemas/User2ndFactorType'
+        secondFactorTypeTransaction:
+          $ref: '#/components/schemas/User2ndFactorType'
+        initTOTP:
+          type: boolean
+        userType:
+          $ref: '#/components/schemas/UserType'
+        displayName:
+          type: string
+        email:
+          type: string
+        notificationChannel:
+          $ref: '#/components/schemas/NotificationChannel'
+        lastLogin:
+          type: timestamp
+        status:
+          $ref: '#/components/schemas/UserStatus'
+        inactivationTimestamp:
+          type: timestamp
+        organizationUuid:
+          $ref: '#/components/schemas/Uuid'
+        businessTeams:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessTeam'
+
+    CustomerGroup:
+      type: object
+      properties:
+        uuid:
+          $ref: '#/components/schemas/Uuid'
+        organizationUuid:
+          $ref: '#/components/schemas/Uuid'
+        name:
+          type: string
+        deleted:
+          type: boolean
+        description:
+          type: string
+        version:
+          type: integer
+          format: int64
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        customers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Customer'
+        businessTeams:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessTeam'
+        deletable:
+          type: boolean
+          default: true
+        editable:
+          type: boolean
+          default: true
+
+    BusinessTeam:
+      type: object
+      properties:
+        uuid:
+          $ref: '#/components/schemas/Uuid'
+        organizationUuid:
+          $ref: '#/components/schemas/Uuid'
+        version:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        customerGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerGroup'
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+        deleted:
+          type: boolean
+
+    Policy:
+      type: object
+      properties:
+        uuid:
+          $ref: '#/components/schemas/Uuid'
+        organizationUuid:
+          $ref: '#/components/schemas/Uuid'
+        version:
+          type: integer
+          format: int64
+        permission:
+          type: string
+          example: approval.closeCustomerOrder.approve
+        context:
+          $ref: '#/components/schemas/Context'
+        min:
+          type: number
+          minimum: 0
+          maximum: 99999999
+        max:
+          type: number
+          minimum: 0
+          maximum: 99999999
+        numberOfApprovers:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 99
+        policyType:
+          $ref: '#/components/schemas/PolicyType'
+
+    Role:
+      properties:
+        uuid:
+          $ref: '#/components/schemas/Uuid'
+        deleted:
+          type: boolean
+        organizationUuid:
+          $ref: '#/components/schemas/Uuid'
+        version:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        businessTeams:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessTeam'
+        policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Policy'
+
+    #================================================================================
+    #
+    # ENUMS
+    #
+    #================================================================================
+    BookCategory:
+      type: string
+      enum:
+        - FICTION
+        - DOCUMENTARY
+        - SCI-FI
+        - HISTORICAL
+        - ESSAYS
+        - BIOGRAPHY
+        - CLASSICS
+
+
+    SegregationType:
+      type: string
+      enum:
+        - SEGREGATED
+        - OMNIBUS
+
+    NotificationChannel:
+      type: string
+      enum:
+        - SMS
+        - EMAIL
+
+    CustomerStateType:
+      type: string
+      enum:
+        - SAVED
+        - CREATING
+        - ACTIVE
+        - LOCKED
+        - CLOSED
+
+    CustomerType:
+      type: string
+      enum:
+        - PRIVATE_CUSTOMER
+        - CORPORATE_CUSTOMER
+        - ORGANIZATION
+
+    UserLanguage:
+      type: string
+      enum:
+        - EN
+        - DE
+        - FR
+        - IT
+
+    UserType:
+      type: string
+      enum:
+        - CLIENT
+        - BANK
+        - TECHNICAL
+
+    User2ndFactorType:
+      type: string
+      enum:
+        - NONE
+        - SMS
+        - MOBILEID
+        - TOTP
+
+    Context:
+      type: string
+      enum:
+        - NONE
+        - CUSTOMER
+
+    UserStatus:
+      type: string
+      enum:
+        - ACTIVE
+        - LOCKED
+        - INACTIVE
+
+    PolicyType:
+      type: string
+      enum:
+        - DEFAULT
+        - MIN_MAX
+        - X_EYES_CHECK
+        - X_EYES_CHECK_WITHOUT_MIN_MAX
+
+    #================================================================================
+    #
+    # OTHER
+    #
+    #================================================================================
+
+    XEyesCheckEvaluation:
+      properties:
+        approvals:
+          type: array
+          items:
+            $ref: '#/components/schemas/Uuid'
+        numberOfApprovals:
+          type: integer
+        businessCode:
+          $ref: '#/components/schemas/EvaluationBusinessCode'
+      required:
+        - result
+
+    EvaluationBusinessCode:
+      type: string
+      enum: [ NOT_ENOUGH_APPROVERS, X_EYES_CHECK_NOT_NEEDED, OK ]
+
+    PermissionParams:
+      properties:
+        amount:
+          type: number
+        permissionNames:
+          type: array
+          items:
+            type: string
+
+    GenericMap:
+      type: object
+      additionalProperties:
+        type: string
+
+    OrderFilter:
+      type: object
+      properties:
+        filterValue:
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterValue'
+
+    FilterValue:
+      type: object
+      properties:
+        customerUuid:
+          type: string
+        permission:
+          type: string
+          example: approval.closeCustomerOrder.list
+        orderType:
+          type: string
+        context:
+          $ref: '#/components/schemas/Context'
+        policyType:
+          $ref: '#/components/schemas/PolicyType'
+        minValue:
+          type: string
+        maxValue:
+          type: string
+
+
+    #================================================================================
+    #
+    # Legacy Client wrappers
+    #
+    #================================================================================
+
+    UsersWrapper:
+      properties:
+        _embedded:
+          properties:
+            users:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+        page:
+          $ref: '#/components/schemas/Page'
+
+    CustomersWrapper:
+      properties:
+        _embedded:
+          properties:
+            users:
+              type: array
+              items:
+                $ref: '#/components/schemas/Customer'
+        page:
+          $ref: '#/components/schemas/Page'
+
+    CustomerGroupsWrapper:
+      properties:
+        _embedded:
+          properties:
+            users:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomerGroup'
+        page:
+          $ref: '#/components/schemas/Page'
+
+    BusinessTeamsWrapper:
+      properties:
+        _embedded:
+          properties:
+            users:
+              type: array
+              items:
+                $ref: '#/components/schemas/BusinessTeam'
+        page:
+          $ref: '#/components/schemas/Page'
+
+    RolesWrapper:
+      properties:
+        _embedded:
+          properties:
+            users:
+              type: array
+              items:
+                $ref: '#/components/schemas/Role'
+        page:
+          $ref: '#/components/schemas/Page'
+
+    PoliciesWrapper:
+      properties:
+        _embedded:
+          properties:
+            users:
+              type: array
+              items:
+                $ref: '#/components/schemas/Policy'
+        page:
+          $ref: '#/components/schemas/Page'
+
+
+    Page:
+      properties:
+        size:
+          type: integer
+        totalElements:
+          type: integer
+        totalPages:
+          type: integer
+        number:
+          type: integer
