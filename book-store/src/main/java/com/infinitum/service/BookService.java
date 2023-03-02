@@ -3,8 +3,8 @@ package com.infinitum.service;
 
 import com.infinitum.exceptions.BookNotFoundException;
 import com.infinitum.mappers.BookEntityMapper;
-import com.infinitum.model.Author;
-import com.infinitum.model.Book;
+import com.infinitum.model.entities.Author;
+import com.infinitum.model.entities.Book;
 import com.infinitum.repositories.AuthorRepository;
 import com.infinitum.repositories.BookRepository;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ public class BookService {
         Author authorEntity = null;
         String bookUUID = UUID.randomUUID().toString();
         String authorUUID = UUID.randomUUID().toString();
-        String uuid = authorUUID;
+
         if (book.getAuthorDetails() != null) {
             String uuidToFind = book.getAuthorDetails().getUuid() != null ? book.getAuthorDetails().getUuid().toString() : "";
             authorEntity = authorRepository.findByUuid(uuidToFind).orElseGet(() -> {
@@ -41,7 +41,7 @@ public class BookService {
                         .uuid(authorUUID);
                 return authorRepository.save(createdAuthorEntity);
             });
-            uuid = authorEntity.getUuid();
+
         }
         Book bookEntity = new Book()
                 .title(book.getBookDetails().getTitle())
@@ -53,7 +53,6 @@ public class BookService {
             authorEntity.addBook(bookEntity);
         }
         book.getBookDetails().uuid(UUID.fromString(bookUUID));
-        book.getAuthorDetails().uuid(UUID.fromString(uuid));
         return book;
     }
 

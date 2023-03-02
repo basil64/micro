@@ -2,7 +2,7 @@ package com.infinitum.mappers;
 
 import com.infinitum.bookstore.generated.model.AuthorDetails;
 import com.infinitum.bookstore.generated.model.BookDetails;
-import com.infinitum.model.Author;
+import com.infinitum.model.entities.Author;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;

@@ -13,6 +13,9 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RestController
 public class AuthorController implements AuthorsApi {
 
@@ -38,7 +41,10 @@ public class AuthorController implements AuthorsApi {
     }
 
     @Override
-    public ResponseEntity<Author> getAuthorByUuid(@ApiParam(value = "",required=true) @PathVariable("uuid") UUID uuid) {
-        return ResponseEntity.ok(authorService.getAuthorByUuid(uuid));
+    public ResponseEntity<Author> getAuthorByUuid(@ApiParam(value = "", required = true) @PathVariable("uuid") UUID uuid) {
+        return ResponseEntity.ok(authorService.getAuthorByUuid(uuid)
+                .add(linkTo(methodOn(AuthorController.class)
+                        .getAuthorByUuid(uuid))
+                        .withSelfRel()));
     }
 }

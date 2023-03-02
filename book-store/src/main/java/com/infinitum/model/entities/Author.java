@@ -1,4 +1,4 @@
-package com.infinitum.model;
+package com.infinitum.model.entities;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -72,6 +72,12 @@ public class Author {
 
     public void addBook(Book book) {
         books.add(book);
+        book.setAuthor(this);
+    }
+
+    public void removeBook(Book book) {
+        books.remove(book);
+        book.setAuthor(null);
     }
 
     public List<Book> getBooks() {

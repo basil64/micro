@@ -1,4 +1,6 @@
-package com.infinitum.model;
+package com.infinitum.model.entities;
+
+import com.infinitum.validations.IsbnValidation;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -17,7 +19,7 @@ public class Book {
     @Column(unique = true)
     private String isbn;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Author author;
 
     private String description;

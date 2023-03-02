@@ -1,4 +1,4 @@
-package com.infinitum.model;
+package com.infinitum.model.entities;
 
 import javax.persistence.*;
 import java.util.HashSet;

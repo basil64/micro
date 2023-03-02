@@ -1,8 +1,8 @@
 package com.infinitum.service;
 
 import com.infinitum.mappers.AuthorEntityMapper;
-import com.infinitum.model.Author;
-import com.infinitum.model.Book;
+import com.infinitum.model.entities.Author;
+import com.infinitum.model.entities.Book;
 import com.infinitum.repositories.AuthorRepository;
 import com.infinitum.repositories.BookRepository;
 import org.junit.jupiter.api.Test;

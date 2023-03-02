@@ -2,8 +2,8 @@ package com.infinitum.mappers;
 
 import com.infinitum.bookstore.generated.model.AuthorDetails;
 import com.infinitum.bookstore.generated.model.BookDetails;
-import com.infinitum.model.Author;
-import com.infinitum.model.Book;
+import com.infinitum.model.entities.Author;
+import com.infinitum.model.entities.Book;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;

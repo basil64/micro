@@ -1,6 +1,6 @@
 package com.infinitum.repositories;
 
-import com.infinitum.model.Author;
+import com.infinitum.model.entities.Author;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
